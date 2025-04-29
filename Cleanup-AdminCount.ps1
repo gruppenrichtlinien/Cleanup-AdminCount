@@ -119,12 +119,12 @@ Param (
       $AllGroups=(Get-ADPrincipalGroupMembership $User).Name
       # Combine User Groups and Protected Groups
       $AllTogether=$($AllGroups;$AllAdminSD)
-      # Find Duplictes/Matches
+      # Find Duplicates/Matches
       $Duplicates = $AllTogether | Group-Object | ?{$_.Count -gt 1} 
       
       # Exclude Administrator (RID-500) and krbtgt from Processing
       if (($user.Name -eq $Administrator.Name) -or ($User.Name -eq $krbtgt.Name)) {
-        Write-Host $User.Name: Leave as it is -ForegroundColor Gray
+        Write-Host $User.Name: Leave it, as it is -ForegroundColor Gray
         } Else {
         if ($Duplicates) {
             # Report Membership of AdminSDHolder Protected Groups
@@ -140,15 +140,16 @@ Param (
             
             if ($cleanup) {
             # Reset admincount to "not set"
-            Set-ADUser -Identity $User -Clear adminCount               
+            Set-ADUser -Identity $User -Clear adminCount
+            
             # Read ACL, set new ACL and write back ACL
             $CN=$User.DistinguishedName
-            $GetAcl=Get-Acl -path AD:$cn
-            # .SetAccessRuleProtection =  Boolean (value,value)
-            # 1 value "isprotected" = $false (Enable Inheritance)
-            # 2 value "preserveInheritance" = $true (inherite ACL)
-            # 2 value will be ignored, if 1 value = $false, but is mandatory
+            $GetAcl=Get-Acl -path AD:$CN
             $GetAcl.SetAccessRuleProtection($false,$true)
+                # .SetAccessRuleProtection =  Boolean (value,value)
+                # 1 value "isprotected" = $false (Enable Inheritance)
+                # 2 value "preserveInheritance" = $true (inherite ACL)
+                # 2 value will be ignored, if 1 value = $false, but is mandatory            
             Set-Acl -Path AD:$CN -AclObject $GetAcl
             Write-Host $User.Name: AdminCount cleared and Inheritance enabled -ForegroundColor Cyan
             }
