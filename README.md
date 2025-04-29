@@ -1,5 +1,28 @@
 # Cleanup-AdminCount
-A language independent(!) Powershell Script to remove orphaned AdminCounts on User objects in AD and enable ACL inheritance. Repair User Accounts, protected by sdprop/AdminSDHolder process in Active Directory, that are no longer Member of Protected Groups
+A <ins>**language independent(!)**</ins> Powershell Script to remove orphaned AdminCounts=1 on User objects in Active Directory and enable ACL inheritance from parent OU.
+Repair/Cleanup User Accounts, protected by sdprop/AdminSDHolder process in Active Directory, that are no longer Member of one of the Protected Groups.
+
+The Script doesn´t work initialliy with the displayname of the the group. The problem is, that´s a localized name and there is **more than** english. 
+
+The script uses the best common denominator: The Well-Known SID. Simple as that.
+The report of group membership is the localized version of the group.  
+
+Groups protected by sdprop (AdminSDHolder) process.  
+- Account Operators
+- Administrator
+- Administrators
+- Backup Operators
+- Domain Admins
+- Domain Controllers
+- Enterprise Admins
+- Enterprise Key Admins
+- Key Admins
+- Krbtgt
+- Print Operators
+- Read-only Domain Controllers
+- Replicator
+- Schema Admins
+- Server Operators
 
 **Call Script in "Report Only" mode:**
 ```
