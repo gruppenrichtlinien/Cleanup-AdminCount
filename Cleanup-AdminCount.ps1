@@ -133,14 +133,13 @@ Param (
             } Else {
             Write-Host $User.Name: You should remove orphaned AdminCount = 1 -ForegroundColor Red
 
-            # Remove AdminCount and enable ACL inheritance, 
+# 2.2 Cleanup All Users, where AdminCount = 1
+            # Clear AdminCount and enable ACL inheritance, 
             # Object is no longer protected by sdprop/AdminSDHolder
             # and the permissions will be resettet to the OU Level, where
             # the object resides.
-
-# 2.2 Cleanup All Users, where AdminCount = 1
+            
             if ($cleanup) {
-            Write-Host $User.Name: Cleaned -ForegroundColor Cyan
             # Reset admincount to "not set"
             Set-ADUser -Identity $User -Clear adminCount               
             # Read ACL, set new ACL and write back ACL
@@ -152,6 +151,7 @@ Param (
             # 2 value will be ignored, if 1 value = $false, but is mandatory
             $GetAcl.SetAccessRuleProtection($false,$true)
             Set-Acl -Path AD:$CN -AclObject $GetAcl
+            Write-Host $User.Name: AdminCount cleared and Inheritance enabled -ForegroundColor Cyan
             }
         }
     }
