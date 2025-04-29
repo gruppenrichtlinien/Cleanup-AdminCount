@@ -128,7 +128,7 @@ Param (
       
       # Exclude Administrator (RID-500) and krbtgt from Processing
       if (($user.Name -eq $Administrator.Name) -or ($User.Name -eq $krbtgt.Name)) {
-        Write-Host $User.Name: Leave as it is -ForegroundColor Gray
+        Write-Host $User.Name: Leave it, as it is -ForegroundColor Gray
         } Else {
         if ($Duplicates) {
             # Report Membership of AdminSDHolder Protected Groups
