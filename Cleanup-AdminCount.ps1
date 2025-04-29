@@ -8,11 +8,7 @@ There are some script around, but "some" people never heard of SID or RID,
 and are completly unaware, that there is more than englisch langauge around.
 
 The AdminSDHolder protected groups are defined by Well-Known SIDs.
-This script reports and works with the Well-Known SID and determines the displaynames.
-
-Actual Version: Single Forest Single Domain
-    ToDo:
-       - Get Forest Domain SID for Schema Admins and Enterprise Admins
+This script reports and works with the Well-Known SID and root the displaynames.
 
 Appendix C: Protected Accounts and Groups in Active Directory
 (AdminSDHolder)
@@ -44,6 +40,7 @@ Param (
 # 1. Determine AdminSDHolder protected objects
 # 1.1 Get Domain SID and set BuiltIn
 
+    $RootSID=((Get-ADForest).Domains | Get-ADDomain).DomainSID
     $DomSID=(Get-ADDomain).DomainSID
     $BuiltIn="S-1-5-32"
 
@@ -82,10 +79,10 @@ Param (
     $DomCon=Get-ADGroup "$DomSID-516"
 
     # SCHEMA_ADMINISTRATORS, S-1-5-21-<root-domain>-518
-    $SchemaAdmins=Get-ADGroup "$DomSID-518"
+    $SchemaAdmins=Get-ADGroup "$RootSID-518"
 
     # ENTERPRISE_ADMINS, S-1-5-21-<root-domain>-519
-    $EntAdmins=Get-ADGroup "$DomSID-519"
+    $EntAdmins=Get-ADGroup "$RootSID-519"
 
     # READONLY_DOMAIN_CONTROLLERS, S-1-5-21-<domain>-521
     $RODC=Get-ADGroup "$DomSID-521"
@@ -128,7 +125,7 @@ Param (
       
       # Exclude Administrator (RID-500) and krbtgt from Processing
       if (($user.Name -eq $Administrator.Name) -or ($User.Name -eq $krbtgt.Name)) {
-        Write-Host $User.Name: Leave it, as it is -ForegroundColor Gray
+        Write-Host $User.Name: Leave as it is -ForegroundColor Gray
         } Else {
         if ($Duplicates) {
             # Report Membership of AdminSDHolder Protected Groups
