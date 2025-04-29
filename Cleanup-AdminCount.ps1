@@ -1,4 +1,4 @@
-﻿<#
+<#
 Mark Heitbrink
 Cleanup-AdminCount.ps1
 
@@ -134,7 +134,7 @@ Param (
             # Report Membership of AdminSDHolder Protected Groups
             Write-Host $User.Name: $Duplicates.Name -ForegroundColor Green
             } Else {
-            Write-Host $User.Name: Remove orphaned AdminCount = 1 -ForegroundColor Red
+            Write-Host $User.Name: You should remove orphaned AdminCount = 1 -ForegroundColor Red
 
             # Remove AdminCount and enable ACL inheritance, 
             # Object is no longer protected by sdprop/AdminSDHolder
@@ -143,6 +143,7 @@ Param (
 
 # 2.2 Cleanup All Users, where AdminCount = 1
             if ($cleanup) {
+            Write-Host $User.Name: Cleaned -ForegroundColor Cyan
             # Reset admincount to "not set"
             Set-ADUser -Identity $User -Clear adminCount               
             # Read ACL, set new ACL and write back ACL
@@ -158,4 +159,3 @@ Param (
         }
     }
 }
-       
