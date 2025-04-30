@@ -1,5 +1,5 @@
 # Cleanup-AdminCount
-A <ins>**language independent(!)**</ins> Powershell Script to remove orphaned AdminCounts=1 on User objects in Active Directory and enable ACL inheritance from parent OU.
+A <ins>**language independent(!)**</ins> Powershell Script to remove orphaned AdminCount=1 on User objects in Active Directory and enable ACL inheritance from parent OU.
 Repair/Cleanup User Accounts, protected by sdprop/AdminSDHolder process in Active Directory, that are no longer Member of one of the Protected Groups.
 
 The Script doesn´t work initialliy with the displayname of the the group. The problem is, that´s a localized name and there is **more than** english. 
