@@ -32,8 +32,7 @@ Groups protected by sdprop (AdminSDHolder) process.
 ```
 .\Cleanup-AdminCount.ps1 -cleanup
 ```
-
-![grafik](https://github.com/user-attachments/assets/53deb74f-472a-4143-adad-1b4fa74707ff)
+![grafik](https://github.com/user-attachments/assets/a66cbc64-32e7-42e4-9cd7-f4499c9f2b34)
 
 ## Background / Information / Microsoft Ressources
 [Appendix C: Protected Accounts and Groups in Active Directory](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/appendix-c--protected-accounts-and-groups-in-active-directory)
