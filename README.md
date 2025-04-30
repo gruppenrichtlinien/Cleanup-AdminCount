@@ -32,6 +32,7 @@ Groups protected by sdprop (AdminSDHolder) process.
 ```
 .\Cleanup-AdminCount.ps1 -cleanup
 ```
+**Running Script - Both Modi**
 ![grafik](https://github.com/user-attachments/assets/a66cbc64-32e7-42e4-9cd7-f4499c9f2b34)
 
 ## Background / Information / Microsoft Ressources
