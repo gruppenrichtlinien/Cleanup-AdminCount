@@ -39,7 +39,9 @@ Param (
 # 1. Determine AdminSDHolder protected objects
 # 1.1 Get Domain SID and set BuiltIn
 
-    $RootSID=((Get-ADForest).Domains | Get-ADDomain).DomainSID
+    # Root Domain of the Forest
+    $RootDomain = (Get-ADForest).RootDomain
+    $RootSID=($RootDomain | Get-ADDomain).DomainSID  # SID of Forest Root Domain
     $DomSID=(Get-ADDomain).DomainSID
     $BuiltIn="S-1-5-32"
 
@@ -78,10 +80,11 @@ Param (
     $DomCon=Get-ADGroup "$DomSID-516"
 
     # SCHEMA_ADMINISTRATORS, S-1-5-21-<root-domain>-518
-    $SchemaAdmins=Get-ADGroup "$RootSID-518"
+    # Talk to Forest Root Domain(-Controller) - especially if executed in a member domain context
+    $SchemaAdmins=Get-ADGroup "$RootSID-518" -Server $RootDomain
 
     # ENTERPRISE_ADMINS, S-1-5-21-<root-domain>-519
-    $EntAdmins=Get-ADGroup "$RootSID-519"
+    $EntAdmins=Get-ADGroup "$RootSID-519" -Server $RootDomain
 
     # READONLY_DOMAIN_CONTROLLERS, S-1-5-21-<domain>-521
     $RODC=Get-ADGroup "$DomSID-521"
@@ -89,8 +92,8 @@ Param (
     # KEY_ADMINS, S-1-5-21-<domain>-526
     $KeyAdmins=Get-ADGroup "$DomSID-526"
 
-    # ENTERPRISE_KEY_ADMINS, S-1-5-21-<domain>-527
-    $EntKeyAdmins=Get-ADGroup "$DomSID-527"
+    # ENTERPRISE_KEY_ADMINS, S-1-5-21-<root-domain>-527
+    $EntKeyAdmins=Get-ADGroup "$RootSID-527" -Server $RootDomain
 
 # 1.3 All AdminSDHolder Objects
     $AllAdminSD=
