@@ -123,7 +123,7 @@ Param (
       $AllGroups = (Get-ADGroup -LDAPFilter ("(member:1.2.840.113556.1.4.1941:={0})" -f $DN) | Select-Object -ExpandProperty Name)
       # add primary group
       $primaryGroup = (Get-ADGroup -Identity (Get-ADUser $User -Properties primaryGroup).primaryGroup -Properties Name -ErrorAction SilentlyContinue).Name
-      $AllGroups = ($AllGroups + $primaryGroup) | Where-Object { $_ -ne $null } | Sort-Object -Unique	  
+      $AllGroups = $($AllGroups;$primaryGroup) | Where-Object { $_ -ne $null } | Sort-Object -Unique	  
       
       # Combine User Groups and Protected Groups
       $AllTogether=$($AllGroups;$AllAdminSD)
